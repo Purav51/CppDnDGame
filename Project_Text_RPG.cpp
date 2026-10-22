@@ -399,14 +399,16 @@ public:
     {
         this->p = player;
 
-        if(incantationRecognized == true)
+        if (incantationRecognized == true)
         {
-            cout << endl << "Trap disabled" <<endl;
+            cout << endl
+                 << "Trap disabled" << endl;
         }
-        else 
+        else
         {
-            cout << endl << "Trap fired!! Dexterity saving throw needed" <<endl;
-             int dexterityModifier = p->GetDexterity() - 8;
+            cout << endl
+                 << "Trap fired!! Dexterity saving throw needed" << endl;
+            int dexterityModifier = p->GetDexterity() - 8;
             cout << endl
                  << "Dexterity Roll: need 14 or higher." << endl
                  << "Your Dexterity modifier is: +" << dexterityModifier << endl;
@@ -420,6 +422,21 @@ public:
 
             cout << "After adding your modifier: +" << dexterityModifier << endl;
             cout << "Your final rolled number is: " << finalRolledNumber << endl;
+
+            if (finalRolledNumber < 14)
+            {
+                cout << endl
+                     << "Your current health is: " << p->GetHealth() << endl;
+                p->ReduceHealth(2);
+                cout << endl
+                     << "The trap hits you and does 2 points of damage." << endl
+                     << "your health is: " << p->GetHealth();
+            }
+            else
+            {
+                cout << endl
+                     << "You avoid the trap sucessfuly." << endl;
+            }
         }
     }
 };
