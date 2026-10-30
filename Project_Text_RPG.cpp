@@ -154,6 +154,7 @@ public:
     {
     }
 };
+
 class TutorialRoom
 {
 private:
@@ -322,11 +323,49 @@ public:
         }
     }
 };
+void TrapMechanic(Player &player)
+{
+    cout << endl
+         << "Trap fired!! Dexterity saving throw needed" << endl;
+    int dexterityModifier = player.GetDexterity() - 8;
+    cout << endl
+         << "Dexterity Roll: need 14 or higher." << endl
+         << "Your Dexterity modifier is: +" << dexterityModifier << endl;
+
+    int rolledNumber = DiceRoll();
+
+    cout << endl
+         << "You rolled: " << rolledNumber << endl;
+
+    int finalRolledNumber = rolledNumber + dexterityModifier;
+
+    cout << "After adding your modifier: +" << dexterityModifier << endl;
+    cout << "Your final rolled number is: " << finalRolledNumber << endl;
+
+    if (finalRolledNumber < 14)
+    {
+        cout << endl
+             << "Your current health is: " << player.GetHealth() << endl;
+        player.ReduceHealth(2);
+        cout << endl
+             << "The trap hits you and does 2 points of damage." << endl
+             << "your health is: " << player.GetHealth();
+    }
+    else
+    {
+        cout << endl
+             << "You avoid the trap sucessfuly." << endl;
+    }
+}
 class Level1
 {
 private:
     Player *p = nullptr;
     bool incantationRecognized = false;
+    void Trap(Player *player)
+    {
+        TrapMechanic(*p);
+    }
 
 public:
     void Entrance(Player *player)
@@ -390,54 +429,24 @@ public:
             }
         }
 
-        cout << endl
-             << "incantation recognized? " << incantationRecognized;
+        // cout << endl
+        //      << "incantation recognized? " << incantationRecognized;
         cout << endl
              << "You venture forth." << endl;
-    }
-    void TrappedDoor(Player *player)
-    {
-        this->p = player;
+        cout << endl
+             << "You step on a pressure plate. A trap.... words float before you asking an incantation" << endl;
 
         if (incantationRecognized == true)
         {
             cout << endl
-                 << "Trap disabled" << endl;
+                 << "You speak the incantation you recognized earlier and the words fade away and the quiet return" << endl;
         }
         else
         {
-            cout << endl
-                 << "Trap fired!! Dexterity saving throw needed" << endl;
-            int dexterityModifier = p->GetDexterity() - 8;
-            cout << endl
-                 << "Dexterity Roll: need 14 or higher." << endl
-                 << "Your Dexterity modifier is: +" << dexterityModifier << endl;
-
-            int rolledNumber = DiceRoll();
-
-            cout << endl
-                 << "You rolled: " << rolledNumber << endl;
-
-            int finalRolledNumber = rolledNumber + dexterityModifier;
-
-            cout << "After adding your modifier: +" << dexterityModifier << endl;
-            cout << "Your final rolled number is: " << finalRolledNumber << endl;
-
-            if (finalRolledNumber < 14)
-            {
-                cout << endl
-                     << "Your current health is: " << p->GetHealth() << endl;
-                p->ReduceHealth(2);
-                cout << endl
-                     << "The trap hits you and does 2 points of damage." << endl
-                     << "your health is: " << p->GetHealth();
-            }
-            else
-            {
-                cout << endl
-                     << "You avoid the trap sucessfuly." << endl;
-            }
+            Trap(p);
         }
+
+        // End of Entrance area
     }
 };
 class Game
@@ -462,7 +471,6 @@ public:
 
         //  level 1.
         lvl1.Entrance(&player);
-        lvl1.TrappedDoor(&player);
     }
 
     // Combat Mechanics
